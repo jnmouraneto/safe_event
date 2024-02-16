@@ -27,8 +27,9 @@ class _MyGuestPageState extends State<GuestPage> {
   void initState() {
     super.initState();
     // Quando a tela é carregada, chamamos o método loadGuests para obter os convidados
-    //loadGuests(widget.event.id);
-    loadGuests(1);
+    int eventId = widget.event.id as int;
+    loadGuests(eventId);
+    
   }
 
   @override
@@ -200,6 +201,7 @@ class _MyGuestPageState extends State<GuestPage> {
     } catch (e) {
       // Trate qualquer exceção que possa ocorrer durante o carregamento dos convidados
       print('Erro ao carregar os convidados: $e');
+      
     }
   }
 

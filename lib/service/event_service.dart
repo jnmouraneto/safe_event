@@ -45,7 +45,6 @@ class ApiServiceEvent {
   final String apiUrl = ApiConfig.baseUrl;
   final authService = AuthService();
   Future<List<Event>> getEvents() async {
-    String erro = "";
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();

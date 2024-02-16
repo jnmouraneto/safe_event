@@ -43,11 +43,8 @@ class _DashboardPageState extends State<DashboardPage> {
             body:
                 Center(child: Text('Error loading events: ${snapshot.error}')),
           );
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Scaffold(
-            body: Center(child: Text('Nenhum evento a exbir')),
-          );
-        } else {
+        } 
+        else {
           List<Event> events = snapshot.data!;
           //ordenar
           events.sort((a,b) => a.eventAt.compareTo(b.eventAt));
