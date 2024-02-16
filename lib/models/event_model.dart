@@ -8,7 +8,7 @@ class Event {
   bool isStarted;
   String name;
   String description;
-  String coverImage;
+  String? coverImage;
   DateTime eventAt;
   DateTime? finishedAt;
   DateTime createdAt;
@@ -34,7 +34,7 @@ class Event {
       name: json['name'],
     
       description: json['description'],
-      coverImage: json['cover_image'],
+      coverImage: json['cover_image'] ?? null,
       eventAt: DateTime.parse(json['event_at']),
       finishedAt: json['finished_at'] != null
           ? DateTime.parse(json['finished_at'])

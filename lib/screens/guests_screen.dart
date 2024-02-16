@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safe_event/assets/images/colors/my_colors.dart';
+import 'package:safe_event/assets/colors/my_colors.dart';
+import 'package:safe_event/controllers/navigation_controller.dart';
 import 'package:safe_event/controllers/qr_code_controller.dart';
 import 'package:safe_event/models/event_model.dart';
 import 'package:safe_event/models/guest_model.dart';
@@ -7,7 +8,7 @@ import 'package:safe_event/service/guest_service.dart';
 
 class GuestPage extends StatefulWidget {
   final Event event;
-  
+
   GuestPage({required this.event});
 
   @override
@@ -15,7 +16,6 @@ class GuestPage extends StatefulWidget {
 }
 
 class _MyGuestPageState extends State<GuestPage> {
-  
   String searchText = '';
 
   Color primaryColor = MyColors.primaryColor;
@@ -29,7 +29,6 @@ class _MyGuestPageState extends State<GuestPage> {
     // Quando a tela é carregada, chamamos o método loadGuests para obter os convidados
     int eventId = widget.event.id as int;
     loadGuests(eventId);
-    
   }
 
   @override
@@ -142,31 +141,38 @@ class _MyGuestPageState extends State<GuestPage> {
                         : ListView.builder(
                             itemCount: filteredGuests.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                elevation: 4.0,
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                  horizontal: 16.0,
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    filteredGuests[index].name ?? '',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
+                              return InkWell(
+                                onTap: () {
+                                  NavigationController.navigateToGuestDetail(context, filteredGuests[index], widget.event);
+                                  
+                                },
+                                child: Card(
+                                  elevation: 4.0,
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 8.0,
+                                    horizontal: 16.0,
                                   ),
-                                  subtitle: Text(
-                                    "ID: ${filteredGuests[index].id}" ?? '',
+                                  child: ListTile(
+                                    title: Text(
+                                      filteredGuests[index].name ?? '',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      "ID: ${filteredGuests[index].id}" ?? '',
+                                    ),
+                                    trailing:
+                                        filteredGuests[index].confirmation !=
+                                                null
+                                            ? const Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green,
+                                              )
+                                            : const Icon(
+                                                Icons.check_circle,
+                                                color: Colors.red,
+                                              ),
                                   ),
-                                  trailing:
-                                      filteredGuests[index].confirmation != null
-                                          ? const Icon(
-                                              Icons.check_circle,
-                                              color: Colors.green,
-                                            )
-                                          : const Icon(
-                                              Icons.check_circle,
-                                              color: Colors.red,
-                                            ),
                                 ),
                               );
                             },
@@ -201,7 +207,6 @@ class _MyGuestPageState extends State<GuestPage> {
     } catch (e) {
       // Trate qualquer exceção que possa ocorrer durante o carregamento dos convidados
       print('Erro ao carregar os convidados: $e');
-      
     }
   }
 

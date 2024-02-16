@@ -1,7 +1,7 @@
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:safe_event/assets/images/colors/my_colors.dart';
+import 'package:safe_event/assets/colors/my_colors.dart';
 import 'package:safe_event/controllers/credentials_controller.dart';
 import 'package:safe_event/controllers/exit_controller.dart';
 import 'package:safe_event/controllers/expiration_controller.dart';
@@ -43,11 +43,8 @@ class _DashboardPageState extends State<DashboardPage> {
             body:
                 Center(child: Text('Error loading events: ${snapshot.error}')),
           );
-        } 
-        else {
+        } else {
           List<Event> events = snapshot.data!;
-          //ordenar
-          events.sort((a,b) => a.eventAt.compareTo(b.eventAt));
           List<Event> eventsOfToday = loadEventsOfToday(events);
           List<Event> eventsNextsDays = loadEventsForNextsDays(events);
 
@@ -67,11 +64,11 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    builHeader(),
+                    buildHeader(),
                     const SizedBox(height: 20),
                     const Text(
                       "Hoje,",
@@ -89,7 +86,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       )
                     else
                       EventListBuilder(events: eventsOfToday),
-                    const SizedBox(height: 80),
+                    const SizedBox(height: 40),
                     const Text(
                       "Para os próximos dias,",
                       style:
@@ -114,7 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget builHeader() {
+  Widget buildHeader() {
     return Row(
       children: [
         Container(
@@ -207,6 +204,9 @@ class _DashboardPageState extends State<DashboardPage> {
     if (events == null) {
       ExpirationController.verifyExpiration(context);
     }
+    print("Quantidade de eventos = ${events.length}");
+    //ordenar
+    events.sort((a, b) => a.eventAt.compareTo(b.eventAt));
     return events;
   }
 
@@ -245,8 +245,8 @@ List<Event> loadEventsOfToday(List<Event> allEvents) {
   DateTime todayEnd = todayStart.add(Duration(days: 1));
 
   List<Event> eventsOfToday = allEvents.where((event) {
-    return event.eventAt.isAfter(todayStart) &&
-        event.eventAt.isBefore(todayEnd);
+    return event.eventAt.isAtSameMomentAs(todayStart) ||
+        (event.eventAt.isAfter(todayStart) && event.eventAt.isBefore(todayEnd));
   }).toList();
 
   return eventsOfToday;
@@ -343,18 +343,20 @@ class EventListBuilder extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      openImageViewer(event.coverImage, context);
-                      print("Clicou no btn");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MyColors.primaryColor,
-                    ),
-                    child: Container(
-                      alignment: Alignment
-                          .center, // Centraliza o conteúdo do Container
-                      child: Text('Banner de divulgação do evento'),
+                  Visibility(
+                    visible: event.coverImage != null,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        openImageViewer(event.coverImage!, context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: MyColors.primaryColor,
+                      ),
+                      child: Container(
+                        alignment: Alignment
+                            .center, // Centraliza o conteúdo do Container
+                        child: Text('Banner de divulgação do evento'),
+                      ),
                     ),
                   ),
                 ],

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:safe_event/assets/images/colors/my_colors.dart';
+import 'package:safe_event/assets/colors/my_colors.dart';
 import 'package:safe_event/screens/events_screen.dart';
 import 'package:safe_event/service/auth_service.dart';
 

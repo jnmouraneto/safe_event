@@ -63,6 +63,7 @@ dev_dependencies:
 flutter:
   assets:
     - C:/Users/Micro/OneDrive/Projetos/Evento Seguro/safe_event/lib/assets/images/assuncaofestas.jpg
+    - C:/Users/Micro/OneDrive/Projetos/Evento Seguro/safe_event/lib/assets/images/icon_avatar.png
   uses-material-design: true
   fonts:
     - family: Questrial

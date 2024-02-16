@@ -1,15 +1,13 @@
 class Confirmation {
   int? id;
   int? guestId;
-  String? note;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   String? detailsConfirm;
 
   Confirmation({
     this.id,
     this.guestId,
-    this.note,
     this.createdAt,
     this.updatedAt,
     this.detailsConfirm
@@ -19,10 +17,9 @@ class Confirmation {
     return Confirmation(
       id: json['id'],
       guestId: json['guest_id'],
-      note: json['note'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      detailsConfirm: json['details_confirm']
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+      detailsConfirm: json['details']
     );
   }
 
@@ -30,6 +27,6 @@ class Confirmation {
 
   @override
   String toString() {
-    return 'Confirmation{id: $id, guestId: $guestId, note: $note, createdAt: $createdAt, updatedAt: $updatedAt}';
+    return 'Confirmation{id: $id, guestId: $guestId,  createdAt: $createdAt, updatedAt: $updatedAt}';
   }
 }
